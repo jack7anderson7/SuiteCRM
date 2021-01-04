@@ -112,68 +112,19 @@ class ProspectList extends SugarBean
 
     public function create_list_query($order_by, $where, $show_deleted = 0)
     {
-        $custom_join = $this->getCustomJoin();
-
-        $query = "SELECT ";
-        $query .= "users.user_name as assigned_user_name, ";
-        $query .= "prospect_lists.*";
-
-        $query .= $custom_join['select'];
-        $query .= " FROM prospect_lists ";
-
-        $query .= "LEFT JOIN users
-					ON prospect_lists.assigned_user_id=users.id ";
-
-        $query .= $custom_join['join'];
-
-        $where_auto = '1=1';
-        if ($show_deleted == 0) {
-            $where_auto = "$this->table_name.deleted=0";
-        } else {
-            if ($show_deleted == 1) {
-                $where_auto = "$this->table_name.deleted=1";
-            }
-        }
-
-        if ($where != "") {
-            $query .= "where $where AND ".$where_auto;
-        } else {
-            $query .= "where ".$where_auto;
-        }
-
-        if ($order_by != "") {
-            $query .= " ORDER BY $order_by";
-        } else {
-            $query .= " ORDER BY prospect_lists.name";
-        }
-
-        return $query;
+        return parent::create_list_query(
+            empty($order_by) ? 'name' : $order_by,
+            $where
+        );
     }
 
 
     public function create_export_query($order_by, $where)
     {
-        $query = "SELECT
-                                prospect_lists.*,
-                                users.user_name as assigned_user_name ";
-        $query .= "FROM prospect_lists ";
-        $query .= 				"LEFT JOIN users
-                                ON prospect_lists.assigned_user_id=users.id ";
-
-        $where_auto = " prospect_lists.deleted=0";
-
-        if ($where != "") {
-            $query .= " WHERE $where AND ".$where_auto;
-        } else {
-            $query .= " WHERE ".$where_auto;
-        }
-
-        if ($order_by != "") {
-            $query .= " ORDER BY $order_by";
-        } else {
-            $query .= " ORDER BY prospect_lists.name";
-        }
-        return $query;
+        return parent::create_export_query(
+            empty($order_by) ? 'name' : $order_by,
+            $where
+        );
     }
 
     public function create_export_members_query($record_id)
