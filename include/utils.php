@@ -563,7 +563,7 @@ function getRunningUser()
 
     if ($runningUser == null) {  // matches null, false and ""
         if (is_windows()) {
-            $runningUser = getenv('USERDOMAIN').'\\'.getenv('USERNAME');
+            $runningUser = getenv('USERDOMAIN') . '\\' . getenv('USERNAME');
         } elseif (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
             $usr = posix_getpwuid(posix_geteuid());
             $runningUser = $usr['name'];
@@ -600,7 +600,7 @@ function addCronAllowedUser($addUser)
             if (!in_array($addUser, $sugar_config['cron']['allowed_cron_users'])) {
                 $sugar_config['cron']['allowed_cron_users'][] = $addUser;
                 $GLOBALS['log']->error("You're using 'root' as the web-server user. This should be avoided " .
-                        "for security reasons. Review allowed_cron_users configuration in config.php.");
+                    "for security reasons. Review allowed_cron_users configuration in config.php.");
             }
         } else {
             $sugar_config['cron']['allowed_cron_users'][] = $addUser;
@@ -847,13 +847,13 @@ function get_user_name($id)
  * This function uses the get_register_value function by default to use a caching layer where supported.
  * This function has been updated return the array sorted by user preference of name display (bug 62712)
  *
- * @param bool   $add_blank        Boolean value to add a blank entry to the array results, true by default
- * @param string $status           String value indicating the status to filter users by, "Active" by default
- * @param string $user_id          String value to specify a particular user id value (searches the id column of users table), blank by default
- * @param bool   $use_real_name    Boolean value indicating whether or not results should include the full name or just user_name, false by default
+ * @param bool $add_blank Boolean value to add a blank entry to the array results, true by default
+ * @param string $status String value indicating the status to filter users by, "Active" by default
+ * @param string $user_id String value to specify a particular user id value (searches the id column of users table), blank by default
+ * @param bool $use_real_name Boolean value indicating whether or not results should include the full name or just user_name, false by default
  * @param string $user_name_filter String value indicating the user_name filter (searches the user_name column of users table) to optionally search with, blank by default
- * @param string $portal_filter    String query filter for portal users (defaults to searching non-portal users), change to blank if you wish to search for all users including portal users
- * @param bool   $from_cache       Boolean value indicating whether or not to use the get_register_value function for caching, true by default
+ * @param string $portal_filter String query filter for portal users (defaults to searching non-portal users), change to blank if you wish to search for all users including portal users
+ * @param bool $from_cache Boolean value indicating whether or not to use the get_register_value function for caching, true by default
  *
  * @return array Array of users matching the filter criteria that may be from cache (if similar search was previously run)
  */
@@ -1299,8 +1299,8 @@ function return_application_language($language)
  * This function retrieves a module's language file and returns the array of strings included.
  *
  * @param string $language specific language to load
- * @param string $module   module name to load strings for
- * @param bool   $refresh  optional, true if you want to rebuild the language strings
+ * @param string $module module name to load strings for
+ * @param bool $refresh optional, true if you want to rebuild the language strings
  *
  * @return array lang strings
  */
@@ -1704,7 +1704,7 @@ function get_workflow_admin_modules_for_user($user)
     }
     foreach ($workflow_mod_list as $key => $val) {
         if (!in_array($val, $workflow_admin_modules) && ($val != 'iFrames' && $val != 'Feeds' && $val != 'Home' && $val != 'Dashboard' && $val != 'Calendar' && $val != 'Activities' && $val != 'Reports') &&
-                ($user->isDeveloperForModule($key))
+            ($user->isDeveloperForModule($key))
         ) {
             $workflow_admin_modules[$key] = $val;
         }
@@ -1842,9 +1842,9 @@ function get_select_options_with_id_separate_key($label_list, $key_list, $select
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-                ($option_key != '' && $selected_key == $option_key) || (
-                    $option_key == '' && (($selected_key == '' && !$massupdate) || $selected_key == '__SugarMassUpdateClearField__')
-                ) || (is_array($selected_key) && in_array($option_key, $selected_key))
+            ($option_key != '' && $selected_key == $option_key) || (
+                $option_key == '' && (($selected_key == '' && !$massupdate) || $selected_key == '__SugarMassUpdateClearField__')
+            ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
             $selected_string = 'selected ';
         }
@@ -2003,7 +2003,6 @@ EOQ;
  * Sort Multi Dimensional Array by Column
  *
  * @param mixed ... &$array1 [, mixed $array1_sort_order = SORT_ASC [, mixed $array1_sort_flags = SORT_REGULAR [, mixed $... ]]]
- * @see http://php.net/manual/en/function.array-multisort.php
  * @return array
  *
  * Example: $array = array_csort($array,'town','age',SORT_DESC,'name');
@@ -2013,6 +2012,7 @@ EOQ;
  * you can repeat the 'col',FLAG,FLAG, as often you want, the highest priority is given to
  * the first - so the array is sorted by the last given column first, then the one before ...
  *
+ * @see http://php.net/manual/en/function.array-multisort.php
  */
 function array_csort()
 {
@@ -2114,7 +2114,7 @@ function translate($string, $mod = '', $selectedValue = '')
 
 /**
  * Converts a number from '1,000' to '1000', and '1,50' (if using commas as a decimal separator) to '1.50'.
- * 
+ *
  * @deprecated This function is unused and will be removed in a future release.
  */
 function unTranslateNum($num)
@@ -2144,8 +2144,8 @@ function unTranslateNum($num)
 function isSSL()
 {
     if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-            (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
-            (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on')
+        (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+        (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on')
     ) {
         return true;
     }
@@ -2203,9 +2203,9 @@ function getDefaultXssTags()
  *
  * @param string str String to search for XSS attack vectors
  *
+ * @return string
  * @deprecated
  *
- * @return string
  */
 function remove_xss($str)
 {
@@ -2215,12 +2215,12 @@ function remove_xss($str)
 /**
  * Detects typical XSS attack patterns.
  *
- * @deprecated
- *
  * @param string str String to search for XSS attack vectors
  * @param bool cleanImg Flag to allow <img> tags to survive - only used by InboundEmail for inline images.
  *
  * @return array Array of matches, empty on clean string
+ * @deprecated
+ *
  */
 function clean_xss($str, $cleanImg = true)
 {
@@ -2314,7 +2314,7 @@ function xss_check_pattern($pattern, $str)
  * Designed to take a string passed in the URL as a parameter and clean all "bad" data from it.
  *
  * @param string $str
- * @param string $filter       which corresponds to a regular expression to use; choices are:
+ * @param string $filter which corresponds to a regular expression to use; choices are:
  *                             "STANDARD" ( default )
  *                             "STANDARDSPACE"
  *                             "FILE"
@@ -2325,7 +2325,7 @@ function xss_check_pattern($pattern, $str)
  *                             "UNIFIED_SEARCH"
  *                             "AUTO_INCREMENT"
  *                             "ALPHANUM"
- * @param bool   $dieOnBadData true (default) if you want to die if bad data if found, false if not
+ * @param bool $dieOnBadData true (default) if you want to die if bad data if found, false if not
  */
 function clean_string($str, $filter = 'STANDARD', $dieOnBadData = true)
 {
@@ -2567,7 +2567,7 @@ function securexss($value)
 
         return $new;
     }
-    
+
     static $xss_cleanup = ['&quot;' => '&#38;', '"' => '&quot;', "'" => '&#039;', '<' => '&lt;', '>' => '&gt;', '`' => '&#96;'];
 
     $value = preg_replace(array('/javascript:/i', '/\0/'), array('java script:', ''), $value);
@@ -2861,7 +2861,7 @@ function values_to_keys($array)
  */
 function clone_relationship(&$db, $tables, $from_column = null, $from_id = null, $to_id = null)
 {
-    foreach ((array) $tables as $table) {
+    foreach ((array)$tables as $table) {
         if ($table == 'emails_beans') {
             $query = "SELECT * FROM $table WHERE $from_column='$from_id' and bean_module='Leads'";
         } else {
@@ -2909,7 +2909,7 @@ function get_unlinked_email_query($type, $bean)
 	) derivedemails on derivedemails.email_id = emails.id";
     $return_array['join_tables'][0] = '';
 
-    if (isset($type) and ! empty($type['return_as_array'])) {
+    if (isset($type) and !empty($type['return_as_array'])) {
         return $return_array;
     }
 
@@ -3051,7 +3051,8 @@ function get_bean_select_array(
     $where = '',
     $order_by = '',
     $blank_is_none = false
-) {
+)
+{
     global $beanFiles;
 
     // set $add_blank = true by default
@@ -3167,7 +3168,7 @@ function display_notice($msg = false)
 
 /**
  * Checks if it is a number that at least has the plus at the beginning.
- * 
+ *
  * @deprecated No longer used, will be removed without replacement in SuiteCRM 7.12.
  */
 function skype_formatted($number)
@@ -3541,7 +3542,7 @@ function sugar_cleanup($exit = false)
 
     //check to see if this is not an `ajax call AND the user preference error flag is set
     if (
-            (isset($_SESSION['USER_PREFRENCE_ERRORS']) && $_SESSION['USER_PREFRENCE_ERRORS']) && ($_REQUEST['action'] != 'modulelistmenu' && $_REQUEST['action'] != 'DynamicAction') && ($_REQUEST['action'] != 'favorites' && $_REQUEST['action'] != 'DynamicAction') && (empty($_REQUEST['to_pdf']) || !$_REQUEST['to_pdf']) && (empty($_REQUEST['sugar_body_only']) || !$_REQUEST['sugar_body_only'])
+        (isset($_SESSION['USER_PREFRENCE_ERRORS']) && $_SESSION['USER_PREFRENCE_ERRORS']) && ($_REQUEST['action'] != 'modulelistmenu' && $_REQUEST['action'] != 'DynamicAction') && ($_REQUEST['action'] != 'favorites' && $_REQUEST['action'] != 'DynamicAction') && (empty($_REQUEST['to_pdf']) || !$_REQUEST['to_pdf']) && (empty($_REQUEST['sugar_body_only']) || !$_REQUEST['sugar_body_only'])
     ) {
         global $app_strings;
         //this is not an ajax call and the user preference error flag is set, so reset the flag and print js to flash message
@@ -3719,7 +3720,7 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
 //            return; //depricated we have lots of these ignore them
         case E_USER_NOTICE:
             $type = 'User notice';
-            // no break
+        // no break
         case E_NOTICE:
             $type = 'Notice';
             $halt_script = false;
@@ -3728,13 +3729,13 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
 
         case E_USER_WARNING:
             $type = 'User warning';
-            // no break
+        // no break
         case E_COMPILE_WARNING:
             $type = 'Compile warning';
-            // no break
+        // no break
         case E_CORE_WARNING:
             $type = 'Core warning';
-            // no break
+        // no break
         case E_WARNING:
             $type = 'Warning';
             $halt_script = false;
@@ -3742,13 +3743,13 @@ function StackTraceErrorHandler($errno, $errstr, $errfile, $errline, $errcontext
 
         case E_USER_ERROR:
             $type = 'User error';
-            // no break
+        // no break
         case E_COMPILE_ERROR:
             $type = 'Compile error';
-            // no break
+        // no break
         case E_CORE_ERROR:
             $type = 'Core error';
-            // no break
+        // no break
         case E_ERROR:
             $type = 'Error';
             $halt_script = true;
@@ -3822,7 +3823,7 @@ function mark_delete_components($sub_object_array, $run_second_level = false, $s
  * Translates php.ini memory values into bytes.
  * For example, an input value of '8M' will return 8388608.
  * 8M is 8 mebibytes, 1 mebibyte is 1,048,576 bytes or 2^20 bytes.
- * 
+ *
  * @param string $val A string like '8M'.
  * @return integer The number of bytes represented by that string.
  */
@@ -3835,10 +3836,10 @@ function return_bytes($val)
     switch ($last) {
         case 'g':
             $val *= 1024;
-            // no break
+        // no break
         case 'm':
             $val *= 1024;
-            // no break
+        // no break
         case 'k':
             $val *= 1024;
     }
@@ -4192,13 +4193,11 @@ function string_format($format, $args, $escape = true)
                 }
             }
             $args[$i] = implode("','", $values);
-            $result = str_replace('{'.$i.'}', $args[$i], $result);
-       }
-        else if ($escape){       
-            $result = str_replace('{'.$i.'}', $db->quote($args[$i]), $result);
-        }
-        else{       
-            $result = str_replace('{'.$i.'}', $args[$i], $result);
+            $result = str_replace('{' . $i . '}', $args[$i], $result);
+        } else if ($escape) {
+            $result = str_replace('{' . $i . '}', $db->quote($args[$i]), $result);
+        } else {
+            $result = str_replace('{' . $i . '}', $args[$i], $result);
         }
     }
 
@@ -4211,12 +4210,12 @@ function string_format($format, $args, $escape = true)
  * numbers using a DB auto-increment key from offline clients and still
  * have the number be unique (since it is modified by the system_id.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param   $num       of bean
  * @param   $system_id from system
  *
  * @return $result a formatted string
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function format_number_display($num, $system_id)
 {
@@ -4360,16 +4359,16 @@ function sugarLangArrayMerge($gimp, $dom)
  * like array_merge() but will handle array elements that are themselves arrays;
  * PHP's version just overwrites the element with the new one.
  *
+ * @param array gimp the array whose values will be overloaded
+ * @param array dom the array whose values will pwn the gimp's
+ *
+ * @return array beaten gimp
  * @internal Note that this function deviates from the internal array_merge()
  *           functions in that it does does not treat numeric keys differently
  *           than string keys.  Additionally, it deviates from
  *           array_merge_recursive() by not creating an array when like values
  *           found.
  *
- * @param array gimp the array whose values will be overloaded
- * @param array dom the array whose values will pwn the gimp's
- *
- * @return array beaten gimp
  */
 function sugarArrayMerge($gimp, $dom)
 {
@@ -4434,9 +4433,9 @@ function sugarArrayMergeRecursive($gimp, $dom)
 
 /**
  * Finds the correctly working versions of PHP-JSON.
+ * @return bool True if NOT found or WRONG version
  * @deprecated This function is unused and will be removed in a future release.
  *
- * @return bool True if NOT found or WRONG version
  */
 function returnPhpJsonStatus()
 {
@@ -4502,7 +4501,8 @@ function generate_search_where(
     &$bean = null,
     $add_custom_fields = false,
     $module = ''
-) {
+)
+{
     $where_clauses = array();
     $like_char = '%';
     $table_name = $bean->object_name;
@@ -4733,7 +4733,6 @@ function _getIcon($iconFileName)
     }
 
 
-
     //First try un-ucfirst-ing the icon name
     if (empty($iconFound)) {
         $iconName = 'icon_' . strtolower(substr($iconFileName, 0, 1)) . substr($iconFileName, 1) . '.gif';
@@ -4757,11 +4756,11 @@ function _getIcon($iconFileName)
  * Function to grab the correct icon image for Studio.
  *
  * @param string $iconFileName Name of the icon file
- * @param string $altfilename  Name of a fallback icon file (displayed if the imagefilename doesn't exist)
- * @param string $width        Width of image
- * @param string $height       Height of image
- * @param string $align        Alignment of image
- * @param string $alt          Alt tag of image
+ * @param string $altfilename Name of a fallback icon file (displayed if the imagefilename doesn't exist)
+ * @param string $width Width of image
+ * @param string $height Height of image
+ * @param string $align Alignment of image
+ * @param string $alt Alt tag of image
  *
  * @return string $string <img> tag with corresponding image
  */
@@ -4784,11 +4783,11 @@ function getStudioIcon($iconFileName = '', $altFileName = '', $width = '48', $he
  * Function to grab the correct icon image for Dashlets Dialog.
  *
  * @param string $filename Location of the icon file
- * @param string $module   Name of the module to fall back onto if file does not exist
- * @param string $width    Width of image
- * @param string $height   Height of image
- * @param string $align    Alignment of image
- * @param string $alt      Alt tag of image
+ * @param string $module Name of the module to fall back onto if file does not exist
+ * @param string $width Width of image
+ * @param string $height Height of image
+ * @param string $align Alignment of image
+ * @param string $alt Alt tag of image
  *
  * @return string $string <img> tag with corresponding image
  */
@@ -4862,12 +4861,12 @@ function is_freetds()
 /**
  * Chart dashlet helper function that returns the correct CSS file, dependent on the current theme.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
+ * @return chart.css file to use
  * @todo this won't work completely right until we impliment css compression and combination
  *       for now, we'll just include the last css file found.
  *
- * @return chart.css file to use
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function chartStyle()
 {
@@ -4878,8 +4877,8 @@ function chartStyle()
  * Chart dashlet helper functions that returns the correct XML color file for charts,
  * dependent on the current theme.
  *
- * @deprecated This function is unused and will be removed in a future release.
  * @return sugarColors.xml to use
+ * @deprecated This function is unused and will be removed in a future release.
  */
 function chartColors()
 {
@@ -4913,7 +4912,8 @@ function ajaxInit()
 function getAbsolutePath(
     $path,
     $currentServer = false
-) {
+)
+{
     $path = trim($path);
 
     // try to match absolute paths like \\server\share, /directory or c:\
@@ -4928,15 +4928,16 @@ function getAbsolutePath(
 /**
  * Returns the bean object of the given module.
  *
- * @deprecated use SugarModule::loadBean() instead
- *
  * @param string $module
  *
  * @return object
+ * @deprecated use SugarModule::loadBean() instead
+ *
  */
 function loadBean(
     $module
-) {
+)
+{
     return SugarModule::get($module)->loadBean();
 }
 
@@ -5203,10 +5204,10 @@ function should_hide_iframes()
 /**
  * Given a version such as 5.5.0RC1 return RC. If we have a version such as: 5.5 then return GA.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param string $version
  * @return string RC, BETA, GA
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function getVersionStatus($version)
 {
@@ -5220,11 +5221,11 @@ function getVersionStatus($version)
  * Return the numeric portion of a version. For example if passed 5.5.0RC1 then return 5.5. If given
  * 5.5.1RC1 then return 5.5.1.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param string $version
  *
  * @return version
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function getMajorMinorVersion($version)
 {
@@ -5280,7 +5281,7 @@ function getUrls($string)
  * Sanitize image file from hostile content.
  *
  * @param string $path Image file
- * @param bool   $jpeg Accept only JPEGs?
+ * @param bool $jpeg Accept only JPEGs?
  */
 function verify_image_file($path, $jpeg = false)
 {
@@ -5342,8 +5343,8 @@ function verify_image_file($path, $jpeg = false)
  * Verify uploaded image
  * Verifies that image has proper extension, MIME type and doesn't contain hostile content.
  *
- * @param string $path      Image path
- * @param bool   $jpeg_only Accept only JPEGs?
+ * @param string $path Image path
+ * @param bool $jpeg_only Accept only JPEGs?
  */
 function verify_uploaded_image($path, $jpeg_only = false)
 {
@@ -5361,7 +5362,7 @@ function verify_uploaded_image($path, $jpeg_only = false)
     $tmpArray = explode('.', $path);
     $ext = end($tmpArray);
     if (substr_count('..', $path) > 0 || ($ext !== $path && !isset($supportedExtensions[strtolower($ext)])) ||
-            !in_array($filetype, array_values($supportedExtensions))
+        !in_array($filetype, array_values($supportedExtensions))
     ) {
         return false;
     }
@@ -5400,7 +5401,7 @@ function order_beans($beans, $field_name)
  * Return search like string
  * This function takes a user input string and returns a string that contains wild card(s) that can be used in db query.
  *
- * @param string $str       string to be searched
+ * @param string $str string to be searched
  * @param string $like_char Database like character, usually '%'
  *
  * @return string Returns a string to be searched in db query
@@ -5410,14 +5411,14 @@ function sql_like_string($str, $like_char, $wildcard = '%', $appendWildcard = tr
 
     // override default wildcard character
     if (isset($GLOBALS['sugar_config']['search_wildcard_char']) &&
-            strlen($GLOBALS['sugar_config']['search_wildcard_char']) == 1
+        strlen($GLOBALS['sugar_config']['search_wildcard_char']) == 1
     ) {
         $wildcard = $GLOBALS['sugar_config']['search_wildcard_char'];
     }
 
     // add wildcard at the beginning of the search string
     if (isset($GLOBALS['sugar_config']['search_wildcard_infront']) &&
-            $GLOBALS['sugar_config']['search_wildcard_infront'] == true
+        $GLOBALS['sugar_config']['search_wildcard_infront'] == true
     ) {
         if (substr($str, 0, 1) != $wildcard) {
             $str = $wildcard . $str;
@@ -5446,9 +5447,9 @@ if (file_exists('custom/application/Ext/Utils/custom_utils.ext.php')) {
 
 /**
  * @param $input - the input string to sanitize
- * @param int    $quotes  - use quotes
+ * @param int $quotes - use quotes
  * @param string $charset - the default charset
- * @param bool   $remove  - strip tags or not
+ * @param bool $remove - strip tags or not
  *
  * @return string - the sanitized string
  */
@@ -5472,10 +5473,10 @@ function getFTSEngineType()
 }
 
 /**
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param string $optionName - name of the option to be retrieved from app_list_strings
  * @return array - the array to be used in option element
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function getFTSBoostOptions($optionName)
 {
@@ -5491,11 +5492,11 @@ function getFTSBoostOptions($optionName)
  * This function walks through an Array and recursively calls utf8_encode on the
  * values of each of the elements.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param $data Array of data to encode
  *
  * @return utf8 encoded Array data
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function utf8_recursive_encode($data)
 {
@@ -5548,8 +5549,6 @@ function get_custom_file_if_exists($file)
  * It can be overriden completely by setting the custom_help_url or partially by setting the custom_help_base_url
  * in config.php or config_override.php.
  *
- * @deprecated This function is unused and will be removed in a future release.
- *
  * @param string $send_edition
  * @param string $send_version
  * @param string $send_lang
@@ -5560,6 +5559,8 @@ function get_custom_file_if_exists($file)
  * @param string $send_anchor
  *
  * @return string the completed help URL
+ * @deprecated This function is unused and will be removed in a future release.
+ *
  */
 function get_help_url($send_edition = '', $send_version = '', $send_lang = '', $send_module = '', $send_action = '', $dev_status = '', $send_key = '', $send_anchor = '')
 {
@@ -5639,7 +5640,7 @@ function getReportNameTranslation($reportName)
 /**
  * Remove vars marked senstitive from array.
  *
- * @param array           $defs
+ * @param array $defs
  * @param SugarBean|array $data
  *
  * @return mixed $data without sensitive fields
@@ -5709,8 +5710,8 @@ function getTypeDisplayList()
  * of bean.
  *
  * @param SugarBean $bean
- * @param array     $fieldDef
- * @param string    $value
+ * @param array $fieldDef
+ * @param string $value
  */
 function assignConcatenatedValue(SugarBean $bean, $fieldDef, $value)
 {
