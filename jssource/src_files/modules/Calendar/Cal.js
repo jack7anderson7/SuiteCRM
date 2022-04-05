@@ -103,30 +103,39 @@ CAL.remove_edit_dialog = function () {
     rd_c.parentNode.removeChild(rd_c);
   }
 }
-CAL.reset_edit_dialog = function () {
-  var e;
-  document.forms["CalendarEditView"].elements["current_module"].value = "Meetings";
-  CAL.get("radio_call").removeAttribute("disabled");
-  CAL.get("radio_meeting").removeAttribute("disabled");
-  CAL.get("radio_call").checked = false;
-  CAL.get("radio_meeting").checked = true;
-  CAL.get("send_invites").value = "";
-  if (e = CAL.get("record"))
-    e.value = "";
-  if (e = CAL.get("list_div_win"))
-    e.style.display = "none";
-  if (typeof SugarWidgetSchedulerSearch.hideCreateForm != 'undefined')
-    SugarWidgetSchedulerSearch.hideCreateForm();
-  $("#scheduler .schedulerInvitees").css("display", "");
-  $("#create-invitees-title").css("display", "");
-  $("#create-invitees-buttons").css("display", "");
-  if (CAL.enable_repeat) {
-    CAL.reset_repeat_form();
-  }
-  CAL.GR_update_focus("Meetings", "");
-  CAL.select_tab("cal-tab-1");
-  QSFieldsArray = new Array();
-  QSProcessedFieldsArray = new Array();
+CAL.reset_edit_dialog = function (module) {
+    var e;
+    if (!module){
+        module = "Meetings";
+    }
+    document.forms["CalendarEditView"].elements["current_module"].value = module;
+    CAL.get("radio_call").removeAttribute("disabled");
+    CAL.get("radio_meeting").removeAttribute("disabled");
+    if (module === "Calls") {
+        CAL.get("radio_call").checked = true;
+    } else if (module === "Meetings") {
+        CAL.get("radio_meeting").checked = true;
+    } else {
+        CAL.get("radio_call").checked = false;
+        CAL.get("radio_meeting").checked = true;
+    }
+    CAL.get("send_invites").value = "";
+    if (e = CAL.get("record"))
+        e.value = "";
+    if (e = CAL.get("list_div_win"))
+        e.style.display = "none";
+    if (typeof SugarWidgetSchedulerSearch.hideCreateForm != 'undefined')
+        SugarWidgetSchedulerSearch.hideCreateForm();
+    $("#scheduler .schedulerInvitees").css("display", "");
+    $("#create-invitees-title").css("display", "");
+    $("#create-invitees-buttons").css("display", "");
+    if (CAL.enable_repeat) {
+        CAL.reset_repeat_form();
+    }
+    CAL.GR_update_focus(module, "");
+    CAL.select_tab("cal-tab-1");
+    QSFieldsArray = new Array();
+    QSProcessedFieldsArray = new Array();
 }
 CAL.reset_repeat_form = function () {
   document.forms['CalendarRepeatForm'].reset();
@@ -477,69 +486,71 @@ CAL.change_activity_type = function (mod_name) {
   CAL.load_create_form(CAL.current_params);
 }
 CAL.load_create_form = function (params) {
-  CAL.reset_edit_dialog();
-  CAL.disable_buttons();
-  ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_LOADING'));
-  CAL.repeat_tab_handle(CAL.current_params.module_name);
-  var callback = {
-    success: function (o) {
-      try {
-        SUGAR.util.globalEval("retValue = (" + o.responseText + ")");
-        res = retValue;
-      } catch (err) {
-        alert(CAL.lbl_error_loading);
-        $('.modal-cal-edit').modal('hide');
-        ajaxStatus.hideStatus();
-        return;
-      }
-      if (res.access == 'yes') {
-        var fc = document.getElementById("form_content");
-        CAL.script_evaled = false;
-        fc.innerHTML = '<script type="text/javascript">CAL.script_evaled = true;</script>' + res.html;
-        if (!CAL.script_evaled) {
-          SUGAR.util.evalScript(res.html);
-        }
-        CAL.get("record").value = "";
-        CAL.get("current_module").value = res.module_name;
-        var mod_name = res.module_name;
-        if (res.edit == 1) {
-          CAL.record_editable = true;
-        } else {
-          CAL.record_editable = false;
-        }
-        CAL.get("title-cal-edit").innerHTML = CAL.lbl_create_new;
-        if (typeof res.repeat != "undefined") {
-          CAL.fill_repeat_tab(res.repeat);
-        }
-        CAL.enable_buttons();
-        setTimeout(function () {
-          SugarWidgetScheduler.update_time();
-          enableQS(false);
-          disableOnUnloadEditView();
-        }, 500);
-        ajaxStatus.hideStatus();
-      } else {
-        alert(CAL.lbl_error_loading);
-        ajaxStatus.hideStatus();
-      }
-    }, failure: function () {
-      alert(CAL.lbl_error_loading);
-      ajaxStatus.hideStatus();
-    }
-  };
-  var url = "index.php?module=Calendar&action=QuickEdit&sugar_body_only=true";
-  var data = {
-    "current_module": params.module_name,
-    "assigned_user_id": params.user_id,
-    "assigned_user_name": params.user_name,
-    "date_start": params.date_start
-  };
 
-  if ("date_end" in params && params.date_end != "") {
-    data['date_end'] = params.date_end;
-  }
-  YAHOO.util.Connect.asyncRequest('POST', url, callback, CAL.toURI(data));
+    var module = params['module_name'];
+    CAL.reset_edit_dialog(module);
+    CAL.disable_buttons();
+    ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_LOADING'));
+    CAL.repeat_tab_handle(CAL.current_params.module_name);
+    var callback = {
+        success: function (o) {
+            try {
+                SUGAR.util.globalEval("retValue = (" + o.responseText + ")");
+                res = retValue;
+            } catch (err) {
+                alert(CAL.lbl_error_loading);
+                $('.modal-cal-edit').modal('hide');
+                ajaxStatus.hideStatus();
+                return;
+            }
+            if (res.access == 'yes') {
+                var fc = document.getElementById("form_content");
+                CAL.script_evaled = false;
+                fc.innerHTML = '<script type="text/javascript">CAL.script_evaled = true;</script>' + res.html;
+                if (!CAL.script_evaled) {
+                    SUGAR.util.evalScript(res.html);
+                }
+                CAL.get("record").value = "";
+                CAL.get("current_module").value = res.module_name;
+                var mod_name = res.module_name;
+                if (res.edit == 1) {
+                    CAL.record_editable = true;
+                } else {
+                    CAL.record_editable = false;
+                }
+                CAL.get("title-cal-edit").innerHTML = CAL.lbl_create_new;
+                if (typeof res.repeat != "undefined") {
+                    CAL.fill_repeat_tab(res.repeat);
+                }
+                CAL.enable_buttons();
+                setTimeout(function () {
+                    SugarWidgetScheduler.update_time();
+                    enableQS(false);
+                    disableOnUnloadEditView();
+                }, 500);
+                ajaxStatus.hideStatus();
+            } else {
+                alert(CAL.lbl_error_loading);
+                ajaxStatus.hideStatus();
+            }
+        }, failure: function () {
+            alert(CAL.lbl_error_loading);
+            ajaxStatus.hideStatus();
+        }
+    };
+    var url = "index.php?module=Calendar&action=QuickEdit&sugar_body_only=true";
+    var data = {
+        "current_module": params.module_name,
+        "assigned_user_id": params.user_id,
+        "assigned_user_name": params.user_name,
+        "date_start": params.date_start
+    };
+    if ("date_end" in params && params.date_end != "") {
+        data['date_end'] = params.date_end;
+    }
+    YAHOO.util.Connect.asyncRequest('POST', url, callback, CAL.toURI(data));
 }
+
 CAL.full_form = function () {
   var e = document.createElement('input');
   e.setAttribute('type', 'hidden');
